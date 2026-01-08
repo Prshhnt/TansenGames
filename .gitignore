@@ -1,0 +1,151 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.log
+*.pot
+*.pyc
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Flask/Django
+instance/
+.webassets-cache
+db.sqlite3
+db.sqlite3-journal
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+*.g.dart
+*.freezed.dart
+
+# Flutter build outputs
+/fitgirl/build/
+/fitgirl/.dart_tool/
+/fitgirl/.flutter-plugins
+/fitgirl/.flutter-plugins-dependencies
+/fitgirl/.packages
+
+# Platform-specific build files
+/fitgirl/android/app/debug
+/fitgirl/android/app/profile
+/fitgirl/android/app/release
+/fitgirl/android/.gradle
+/fitgirl/android/captures/
+/fitgirl/android/gradlew
+/fitgirl/android/gradlew.bat
+/fitgirl/android/local.properties
+/fitgirl/android/key.properties
+
+# iOS
+/fitgirl/ios/Flutter/.last_build_id
+/fitgirl/ios/Flutter/flutter_export_environment.sh
+/fitgirl/ios/Flutter/Flutter.framework
+/fitgirl/ios/Flutter/Flutter.podspec
+/fitgirl/ios/Pods/
+/fitgirl/ios/.symlinks/
+/fitgirl/ios/Flutter/App.framework
+/fitgirl/ios/Flutter/Generated.xcconfig
+/fitgirl/ios/ServiceDefinitions.json
+/fitgirl/ios/Runner/GeneratedPluginRegistrant.*
+
+# macOS
+/fitgirl/macos/Flutter/ephemeral/
+/fitgirl/macos/Flutter/Flutter-Generated.xcconfig
+/fitgirl/macos/Flutter/GeneratedPluginRegistrant.swift
+/fitgirl/macos/Pods/
+
+# Windows
+/fitgirl/windows/flutter/ephemeral/
+
+# Linux
+/fitgirl/linux/flutter/ephemeral/
+
+# Web
+/fitgirl/web/flutter_service_worker.js
+
+# Miscellaneous
+*.class
+*.lock
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+
+# Symbolication
+app.*.symbols
+
+# Obfuscation
+app.*.map.json
+
+# Android Studio
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+.gradle/
+captures/
+
+# Test results
+test-results/
+*.coverage
+
+# Generated files
+generated/
+*.generated.dart
