@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: ^3.10.4
+  sdk: ^3.9.0
 
 dependencies:
   flutter:
@@ -15,6 +15,12 @@ dependencies:
   url_launcher: ^6.3.1
   # Local storage for search history
   shared_preferences: ^2.3.5
+  # File system access for downloads directory
+  path_provider: ^2.1.5
+  # Path manipulation utilities
+  path: ^1.9.0
+  # Google Fonts for Space Grotesk and Noto Sans
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
