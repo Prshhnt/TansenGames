@@ -147,3 +147,16 @@ test-results/
 # Generated files
 generated/
 *.generated.dart
+
+# Old decrypt files
+decrypt/
+
+# Test folder with downloaded HTML files
+test/html_downloads/
+test/*.html
+test/*.json
+
+# Project folders
+ui/
+test/
+.github/
