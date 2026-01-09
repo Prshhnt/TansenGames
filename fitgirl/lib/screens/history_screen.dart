@@ -4,7 +4,8 @@ import '../models/download_link.dart';
 import '../services/search_history_service.dart';
 import '../services/api_service.dart';
 import '../widgets/download_links_widget.dart';
-import '../widgets/error_widget.dart';
+import '../theme/app_theme.dart';
+import '../widgets/custom/custom_button.dart';
 
 /// History screen showing clicked article links
 class HistoryScreen extends StatefulWidget {
@@ -42,13 +43,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
         title: const Text('Clear History'),
         content: const Text('Are you sure you want to clear all history?'),
         actions: [
-          TextButton(
+          SecondaryButton(
+            label: 'Cancel',
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
           ),
-          FilledButton(
+          const SizedBox(width: 8),
+          PrimaryButton(
+            label: 'Clear',
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Clear'),
           ),
         ],
       ),
@@ -72,18 +74,24 @@ class _HistoryScreenState extends State<HistoryScreen> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const Center(
-          child: Card(
-            child: Padding(
-              padding: EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
-                  Text('Fetching download mirrors...'),
-                ],
-              ),
+        builder: (context) => Center(
+          child: Container(
+            padding: const EdgeInsets.all(24.0),
+            decoration: BoxDecoration(
+              color: AppTheme.surfaceDark,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppTheme.borderColor),
+            ),
+            child: const Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(color: AppTheme.primary),
+                SizedBox(height: 16),
+                Text(
+                  'Fetching download mirrors...',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
           ),
         ),
@@ -120,9 +128,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
           title: const Text('Error'),
           content: Text(e.toString()),
           actions: [
-            TextButton(
+            PrimaryButton(
+              label: 'OK',
               onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
             ),
           ],
         ),
@@ -133,113 +141,157 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('History'),
-        actions: [
-          if (_history.isNotEmpty)
-            IconButton(
-              icon: const Icon(Icons.delete_sweep),
-              tooltip: 'Clear history',
-              onPressed: _clearHistory,
+      body: Column(
+        children: [
+          // Custom header replacing AppBar
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
+              color: AppTheme.surfaceDark,
+              border: Border(
+                bottom: BorderSide(color: AppTheme.borderColor),
+              ),
             ),
-        ],
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _history.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.history,
-                    size: 64,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withOpacity(0.5),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.history,
+                  color: AppTheme.primary,
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  'History',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    fontFamily: 'SpaceGrotesk',
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No history yet',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Articles you visit will appear here',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withOpacity(0.6),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : ScrollConfiguration(
-              behavior: ScrollConfiguration.of(context).copyWith(
-                scrollbars: true,
-                physics: const BouncingScrollPhysics(),
-              ),
-              child: ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: _history.length,
-                itemBuilder: (context, index) {
-                  final article = _history[index];
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    child: InkWell(
-                      onTap: () => _fetchDownloadMirrors(
-                        article['title']!,
-                        article['url']!,
-                      ),
-                      borderRadius: BorderRadius.circular(16),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
+                ),
+                const Spacer(),
+                SecondaryButton(
+                  label: 'Clear history',
+                  icon: Icons.delete_sweep,
+                  onPressed: _history.isNotEmpty ? _clearHistory : null,
+                ),
+              ],
+            ),
+          ),
+
+          // Body
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator(color: AppTheme.primary))
+                : _history.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.videogame_asset,
-                              color: Theme.of(context).colorScheme.primary,
+                              Icons.history,
+                              size: 64,
+                              color: AppTheme.primary.withOpacity(0.5),
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    article['title']!,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.titleMedium,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    _formatTimestamp(article['timestamp']!),
-                                    style: Theme.of(context).textTheme.bodySmall
-                                        ?.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface
-                                              .withOpacity(0.6),
-                                        ),
-                                  ),
-                                ],
+                            const SizedBox(height: 16),
+                            const Text(
+                              'No history yet',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                fontFamily: 'SpaceGrotesk',
                               ),
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.close, size: 20),
-                              onPressed: () => _removeItem(article['url']!),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Articles you visit will appear here',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppTheme.slate400,
+                                fontFamily: 'NotoSans',
+                              ),
                             ),
                           ],
                         ),
+                      )
+                    : ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context).copyWith(
+                          scrollbars: true,
+                          physics: const BouncingScrollPhysics(),
+                        ),
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: _history.length,
+                          itemBuilder: (context, index) {
+                            final article = _history[index];
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 12),
+                              decoration: BoxDecoration(
+                                color: AppTheme.surfaceDark,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: AppTheme.borderColor),
+                              ),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () => _fetchDownloadMirrors(
+                                    article['title']!,
+                                    article['url']!,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.videogame_asset,
+                                          color: AppTheme.primary,
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                article['title']!,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white,
+                                                  fontFamily: 'SpaceGrotesk',
+                                                ),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                _formatTimestamp(article['timestamp']!),
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: AppTheme.slate400,
+                                                  fontFamily: 'NotoSans',
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        IconButtonCustom(
+                                          icon: Icons.close,
+                                          tooltip: 'Remove',
+                                          onPressed: () => _removeItem(article['url']!),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            ),
+          ),
+        ],
+      ),
     );
   }
 
